@@ -1,0 +1,4 @@
+FROM node:20
+
+ENV DOCKERIZE_VERSION v0.2.0
+RUN wget https://

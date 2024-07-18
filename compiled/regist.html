@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    window.onload = () => {
+        const button = document.querySelector("button")
+        button.addEventListener('click', ()=> {
+
+            let data = {
+                "username" : document.querySelector("#username").value,
+                "password" : document.querySelector("#password").value
+            }
+
+            fetch('/login/regist', {
+                method : "POST",
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then((response) => {
+                if(!response.ok){
+                    throw new Error("Server Error")
+                }
+                return response.json()
+            }).then((result) => {
+                if(result["result"] == 'success') {
+                    document.querySelector("#result").innerHTML = "success"
+                }else{
+                    document.querySelector("#result").innerHTML = "error"
+                }
+            })
+        })
+    }
+</script>
+<body>
+    <h1>Regist User</h1>
+    <div>
+        <div id="result"></div>
+        username : <input id="username"><br>
+        password : <input id="password"><br>
+        <button>등록</button><br>
+        <a href="/login">로그인 페이지로 이동</a>
+    </div>
+</body>
+</html>

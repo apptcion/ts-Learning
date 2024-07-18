@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    window.onload = () => {
+        let button = document.querySelector("button")
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            let data = {
+                "username" : document.querySelector("#username").value,
+                "password" : document.querySelector("#password").value
+            }
+
+            fetch("/login/loginProc", {
+                method : "POST",
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json()
+            }).then((result) => {
+                console.log(result)
+                if(result["result"] == 'success'){
+                    document.querySelector("#result").innerHTML = "Success!!!"
+                    localStorage.setItem("userInfo", JSON.stringify(result))
+                    location.href = "/"
+                    
+                }else{
+                    document.querySelector("#result").innerHTML = "Fail"
+                }
+            }).catch((error) => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        })
+    }
+</script>
+<body>
+    <h1>Login</h1>
+    <div>
+        <div id="result"></div>
+        username : <input id="username" type="text"><br>
+        password : <input id="password" type="password">
+        <button>login</button><br>
+        <a href="/login/registUser">회원가입</a>
+    </div>
+</body>
+</html>
